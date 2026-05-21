@@ -1,0 +1,6 @@
+Debug/
+Release/
+.launches/
+.settings/
+*.log
+*.ccxml
