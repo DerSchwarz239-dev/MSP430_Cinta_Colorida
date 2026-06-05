@@ -13,9 +13,8 @@
 #define MOTORDC_PORT GPIO_PORT_P1
 #define MOTORDC_PIN  GPIO_PIN6
 
-//Variables conn prefijo extern para poder ser usadas en main.c -->REVISAR
-extern volatile uint16_t lectura_pot = 0;
-extern volatile uint16_t ADC_flag = 0;
+//Variables con prefijo extern para poder ser usadas en main.c -->REVISAR
+
 
 void Timer_init(void);
 void Servo_Start_PWM(void);

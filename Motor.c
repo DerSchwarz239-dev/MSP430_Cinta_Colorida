@@ -8,7 +8,7 @@
 #include "Motor.h"
 
 volatile uint16_t lectura_pot = 0;
-volatile uint16_t ADC_flag = 0;
+ volatile uint16_t ADC_flag = 0;
 
 void Motores_init(void){
     //Configura P1.7 como salida del timer con CCR1
@@ -17,8 +17,8 @@ void Motores_init(void){
     GPIO_setAsPeripheralModuleFunctionOutputPin(MOTORDC_PORT,MOTORDC_PIN,GPIO_PRIMARY_MODULE_FUNCTION);
     Timer_init();
     Servo_Start_PWM();
-    MotorDC_Start_PWM();
-
+    //MotorDC_Start_PWM();
+    //void ADC_config ();
 
 }
 void Timer_init(void){
@@ -41,7 +41,7 @@ void Servo_Start_PWM(void){
     // Configura el canal de PWM para conmutar
     Timer_A_initCompareModeParam cpServo = {0};
     cpServo.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_1; // Se usa CCR1 para conmutar
-    cpServo.compareInterruptEnable = TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE;
+    cpServo.compareInterruptEnable = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE;
     cpServo.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;  //modo 7
 
     /*
@@ -50,7 +50,8 @@ void Servo_Start_PWM(void){
      * Pulso de 2ms -> Servo a 180°
      */
 
-    cpServo.compareValue = 1500;   // Arranca en 90° (1500us = 1.5ms)
+    cpServo.compareValue = 1000;   // Arranca en 90° (1500us = 1.5ms)
+
 
     Timer_A_initCompareMode(TIMER_A0_BASE, &cpServo);
 }
@@ -71,7 +72,7 @@ void MotorDC_Start_PWM(void){
 
 void ADC_config (void){
     //Inicializa ADC
-    ADC_init(ADC_BASE, ADC_SAMPLEHOLDSOURCE_SC, ADC_CLOCKSOURCE_ADC_OSC, ADC_CLOCKSOURCE_DIVIDER_1);
+    ADC_init(ADC_BASE, ADC_SAMPLEHOLDSOURCE_SC, ADC_CLOCKSOURCE_ADCOSC, ADC_CLOCKDIVIDER_1);
     //Enciende núcleo ADC
     ADC_enable(ADC_BASE);
     //Duración de ventana de muestreo. Configuración estándar.
@@ -91,6 +92,27 @@ __interrupt void ADC_ISR(void) {
 }
 
 
+//REVISAR
+/*
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TA0_A1_ISR(void){
+    switch(__even_in_range(TA0IV,14)){
 
+        case 0x02: //ccr1
+                GPIO_setOutputLowOnPin(SERVO_PORT, selectedPins)(SERVO_PORT, SERVO_PIN);
+                break;
+        }
+        case 0x0x: //ccr2
+                GPIO_low(SERVO_PORTx, SERVO_PINx);
+                break;
+        }
 
+}/*
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TA0_A1_ISR(void){
+                    GPIO_high(SERVO_PORT, SERVO_PIN);
+             Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, valorglobal);
+
+}
+*/
 
