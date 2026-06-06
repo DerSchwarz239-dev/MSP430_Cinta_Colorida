@@ -11,9 +11,18 @@ int main(void)
     __enable_interrupt();
     Init_HC05();
 
-    while(1){
+    // Esperar a que HC-05 inicie
+       __delay_cycles(1000000);  // 1 segundo
 
-    }
+       while(1){
+           // Enviar un carácter de prueba
+           send_Byte_UART('A');
+
+           // Esperar 1 segundo
+           __delay_cycles(1000000);
+       }
+
+
     return 0;
 
 }

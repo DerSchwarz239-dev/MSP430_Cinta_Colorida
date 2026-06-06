@@ -18,7 +18,7 @@
 #define HC_EN_PIN   GPIO_PIN3
 
 void Init_HC05 (void);
-//void send_Byte_UART(uint8_t data);
+void send_Byte_UART(uint8_t data);
 void send_String_UART (const char* str);
 
 

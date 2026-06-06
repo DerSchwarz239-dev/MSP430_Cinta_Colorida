@@ -53,19 +53,15 @@ void Init_HC05 (void){
     /*Fin Configuracion UART*/
 }
 
-/*
 void send_Byte_UART(uint8_t data){
-     Funcion que se encarga de enviar un solo byte de informacion por UART
-     Se deja comentado porque creo que es una funcion primitiva
+    EUSCI_A_UART_transmitData(EUSCI_A0_BASE, data);
 }
-*/
 
 void send_String_UART (const char* str){
     while (*str != '\0') {
-        EUSCI_A_UART_transmitData(EUSCI_A0_BASE, (uint8_t)*str);
-           //sendByte_UART((uint8_t)*str);
-           str++;
-       }
+        send_Byte_UART((uint8_t)*str);
+        str++;
+    }
 }
 
 
