@@ -19,12 +19,16 @@ void Init_HC05 (void){
      * Si se desea otra configuracion, se debera alterar en MODO AT (leer datasheet de HC05 para mas informacion).
      */
 
+    /*Se empleara el modulo bluetooth del ESP32 para transmitir al Celular, por problemas con el HC05
+     * Se sigue usando UART para comunicar el MSP430 al ESP32.
+     */
+
     /*Se configuran los pines P1.0 y P1.1 para comunicacion UART*/
     GPIO_setAsPeripheralModuleFunctionOutputPin(HC_PORT, HC_TX_PIN, GPIO_PRIMARY_MODULE_FUNCTION); //TX
     GPIO_setAsPeripheralModuleFunctionInputPin(HC_PORT, HC_RX_PIN, GPIO_PRIMARY_MODULE_FUNCTION); //RX
     /*Configurar P1.3 como salida en alto para EN*/
-    GPIO_setAsOutputPin(HC_PORT, HC_EN_PIN);
-    GPIO_setOutputHighOnPin(HC_PORT, HC_EN_PIN);
+    //GPIO_setAsOutputPin(HC_PORT, HC_EN_PIN);
+    //GPIO_setOutputHighOnPin(HC_PORT, HC_EN_PIN);
 
     /*Configuracion de UART*/
     // - Reloj: SMCLK = 1 MHz (desde el generador FLL de ACLK)
@@ -62,6 +66,22 @@ void send_String_UART (const char* str){
         send_Byte_UART((uint8_t)*str);
         str++;
     }
+}
+
+void send_Color_UART (COLOR_T color){
+    switch (color) {
+            case ROJO:
+                send_String_UART("ROJO\r\n");
+                break;
+            case VERDE:
+                send_String_UART("VERDE\r\n");
+                break;
+            case AZUL:
+                send_String_UART("AZUL\r\n");
+                break;
+            default:
+                send_String_UART("ESTE ES UN EASTER EGG\r\n");
+        }
 }
 
 
