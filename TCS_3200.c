@@ -23,6 +23,8 @@ void TCS3200_init(void) {
     GPIO_selectInterruptEdge(TCS_PORT, TCS_PIN_OUT, GPIO_LOW_TO_HIGH_TRANSITION);
     GPIO_clearInterrupt(TCS_PORT, TCS_PIN_OUT);
     GPIO_enableInterrupt(TCS_PORT, TCS_PIN_OUT);
+    TimerA1_init();
+
 }
 
 void TCS3200_Select_Color(COLOR_T color){
@@ -68,3 +70,21 @@ COLOR_T TCS3200_Read_Color (void){
 
 
 }
+
+
+void TimerA1_init(void){
+
+    //Configura el timer en modo continuo
+       Timer_A_initContinuousModeParam c = {0};
+       c.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
+       c.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+       c.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE; //Desactiva interrupcion por desborde
+       c.timerClear = TIMER_A_DO_CLEAR;
+       c.startTimer = false;
+
+       Timer_A_initUpMode(TIMER_A1_BASE, &c);
+       Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_CONTINUOUS_MODE);
+
+}
+
+

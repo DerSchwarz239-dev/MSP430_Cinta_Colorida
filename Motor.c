@@ -51,7 +51,6 @@ void Timer_init(void){
     Timer_A_initUpMode(TIMER_A0_BASE, &p);
     Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);
 
-
 }
 
 void Servo_Start_PWM(void){
