@@ -7,6 +7,7 @@
 
 #include "Mod_HC_05.h"
 
+
 void Init_HC05 (void){
     /*Funcion dedicada a configurar el Modulo HC05 cuando se inicia*/
     /*Se hace configuracion para puerto UART*/
@@ -79,9 +80,11 @@ void send_Color_UART (COLOR_T color){
             case AZUL:
                 send_String_UART("AZUL\r\n");
                 break;
+            case TRANSPARENTE:
+                break;
             default:
                 send_String_UART("ESTE ES UN EASTER EGG\r\n");
-        }
+     }
 }
 
 

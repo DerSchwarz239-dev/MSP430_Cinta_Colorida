@@ -16,14 +16,9 @@
 
 #include <driverlib.h>
 #include "hal_LCD.h"
+#include "TCS_3200.h"
 
-// Enumeracion para mejor legibilidad
-typedef enum{
-    ROJO = 0,
-    VERDE = 1,
-    AZUL = 2,
-    TOTAL = 3
-}COLOR_T;
+
 
 void show_Color_Amount (uint8_t amount, COLOR_T color);
 

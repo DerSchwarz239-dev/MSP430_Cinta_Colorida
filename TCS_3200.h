@@ -10,8 +10,9 @@
 #include <driverlib.h>
 
 
+
 /*Definicion de los pines que se usan para el sensor TCS3200*/
-#define TCS_PORT    GPIO_PORT_P2
+#define TCS_PORT    GPIO_PORT_P5
 
 #define TCS_PIN_S0  GPIO_PIN0
 #define TCS_PIN_S1  GPIO_PIN1
@@ -19,7 +20,8 @@
 #define TCS_PIN_S3  GPIO_PIN3
 //Pin de salida de frecuencia
 //Es importante que coincida con el modo captura de timer_A1
-#define TCS_PIN_OUT GPIO_PIN4
+#define TCS_PORT_OUT GPIO_PORT_P8
+#define TCS_PIN_OUT GPIO_PIN3
 
 // Enumeracion para mejor legibilidad
 typedef enum{
@@ -34,6 +36,8 @@ typedef enum{
 void TCS3200_init(void);
 
 void TCS3200_Select_Color(COLOR_T color);
+
+void TCS3200_init_Capture(void);
 
 uint32_t TCS3200_Read_Frequency(void);
 

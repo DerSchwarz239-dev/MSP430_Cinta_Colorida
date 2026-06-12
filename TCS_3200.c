@@ -19,10 +19,10 @@ void TCS3200_init(void) {
     GPIO_setOutputLowOnPin(TCS_PORT, TCS_PIN_S1);
 
     /*Se configura PIN OUT como entrada con Interrupcion */
-    GPIO_setAsInputPin(TCS_PORT, TCS_PIN_OUT);
-    GPIO_selectInterruptEdge(TCS_PORT, TCS_PIN_OUT, GPIO_LOW_TO_HIGH_TRANSITION);
-    GPIO_clearInterrupt(TCS_PORT, TCS_PIN_OUT);
-    GPIO_enableInterrupt(TCS_PORT, TCS_PIN_OUT);
+    GPIO_setAsInputPin(TCS_PORT_OUT, TCS_PIN_OUT);
+    GPIO_selectInterruptEdge(TCS_PORT_OUT, TCS_PIN_OUT, GPIO_LOW_TO_HIGH_TRANSITION);
+    GPIO_clearInterrupt(TCS_PORT_OUT, TCS_PIN_OUT);
+    GPIO_enableInterrupt(TCS_PORT_OUT, TCS_PIN_OUT);
 }
 
 void TCS3200_Select_Color(COLOR_T color){
@@ -55,6 +55,18 @@ void TCS3200_Select_Color(COLOR_T color){
     }
 }
 
+void TCS3200_init_Capture(void){
+
+    Timer_A_initCaptureModeParam captureParam = {0};
+    captureParam.captureRegister = TIMER_A_CAPTURECOMPARE_REGISTER_1;
+    captureParam.captureMode = TIMER_A_CAPTUREMODE_RISING_EDGE;
+    captureParam.captureInputSelect = TIMER_A_CAPTURE_INPUTSELECT_CCIxA;
+    captureParam.synchronizeCaptureSource = TIMER_A_CAPTURE_SYNCHRONOUS;
+    captureParam.captureInterruptEnable = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE;
+    captureParam.captureOutputMode = TIMER_A_OUTPUTMODE_OUTBITVALUE;
+    Timer_A_initCaptureMode(TIMER_A1_BASE, &captureParam);
+    Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_CONTINUOUS_MODE);
+}
 
 uint32_t TCS3200_Read_Frequency (void){
 // En esta funcion se debe leer los pulsos que vienen del sensor y retornar
