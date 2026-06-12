@@ -1,6 +1,9 @@
 #include <driverlib.h>
 #include "Motor.h"
 #include "hal_LCD.h"
+#include "TCS_3200.h"
+#include "LCD_proyecto.h"
+#include "Mod_HC_05.h"
 
 
 extern volatile uint16_t lectura_pot;
@@ -37,6 +40,7 @@ int main(void)
         }
 
     }
+
     return 0;
 
 }
