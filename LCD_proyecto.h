@@ -18,8 +18,6 @@
 #include "hal_LCD.h"
 #include "TCS_3200.h"
 
-
-
 void show_Color_Amount (uint8_t amount, COLOR_T color);
 
 #endif /* LCD_PROYECTO_H_ */

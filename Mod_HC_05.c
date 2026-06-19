@@ -7,7 +7,6 @@
 
 #include "Mod_HC_05.h"
 
-
 void Init_HC05 (void){
     /*Funcion dedicada a configurar el Modulo HC05 cuando se inicia*/
     /*Se hace configuracion para puerto UART*/
@@ -56,6 +55,12 @@ void Init_HC05 (void){
     EUSCI_A_UART_init(EUSCI_A0_BASE, &param);
     EUSCI_A_UART_enable(EUSCI_A0_BASE);
     /*Fin Configuracion UART*/
+
+    /*Configuracion SMCLK a 1 MHz*/
+    CS_initFLLSettle(1000, 30);
+    volatile uint32_t f_smclk = CS_getSMCLK();  // debe dar 1000000
+
+
 }
 
 void send_Byte_UART(uint8_t data){
