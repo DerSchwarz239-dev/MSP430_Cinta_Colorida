@@ -42,8 +42,10 @@ void TCS3200_Select_Color(COLOR_T color);
 
 void TCS3200_init_Capture(void);
 
-uint32_t TCS3200_Read_Frequency(void);
+void TCS3200_Read_period (void);
 
 COLOR_T TCS3200_Read_Color (void);
+
+void TimerA1_init(void);
 
 #endif /* TCS_3200_H_ */

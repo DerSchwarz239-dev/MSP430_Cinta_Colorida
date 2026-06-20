@@ -31,7 +31,7 @@ void Motores_init(void){
 
 
     Timer_init();
-    //Servo_Start_PWM();
+    Servo_Start_PWM();
     MotorDC_Start_PWM();
     ADC_config ();
 
@@ -110,14 +110,14 @@ __interrupt void ADC_ISR(void) {
 }
 
 #pragma vector = PORT1_VECTOR
-__interrupt void ISR_Puerto1(void){
+__interrupt void ISR_Puerto1(void){ //Atiende el botón en PI.2
 
    //Guarda estado de P1.2
-   uint16_t status = GPIO_getInterruptStatus(GPIO_PORT_P1, GPIO_PIN2);
+   uint16_t status = GPIO_getInterruptStatus(BTN_SS_PORT, BTN_SS_PIN);
 
     if(status & GPIO_PIN2){   //Evalua que se haya presionado el botón en P1.2
         //Se limpia flag de botón en P1.2
-        GPIO_clearInterrupt(GPIO_PORT_P1, GPIO_PIN2);
+        GPIO_clearInterrupt(BTN_SS_PORT, BTN_SS_PIN);
         if(Pausado){//Si está pausado, prende el timer
             Pausado = 0;
             Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);

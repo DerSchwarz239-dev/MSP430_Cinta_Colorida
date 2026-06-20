@@ -15,6 +15,8 @@
 #define MOTORDC_PIN  GPIO_PIN6
 #define ADC_PORT  GPIO_PORT_P8
 #define ADC_PIN  GPIO_PIN1
+#define BTN_SS_PORT  GPIO_PORT_P1
+#define BTN_SS_PIN  GPIO_PIN2
 
 
 
