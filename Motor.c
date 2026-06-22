@@ -32,7 +32,7 @@ void Motores_init(void){
 
     Timer_init();
     Servo_Start_PWM();
-    //MotorDC_Start_PWM();
+    MotorDC_Start_PWM();
     ADC_config ();
 
 }
