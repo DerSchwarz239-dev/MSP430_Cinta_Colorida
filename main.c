@@ -41,13 +41,13 @@ int main(void)
 
 
 
-        /*
+
         ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad según el potenciómetro
         if(ADC_flag){
             ADC_flag = 0;
             velocidad = (((uint32_t)lectura_pot*20000)/1023); //Adapta el valor del ADC a la cantidad de ticks
             Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_2, velocidad);
-        }*/
+        }
 
     }
 
