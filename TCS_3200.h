@@ -23,6 +23,9 @@
 #define TCS_PORT_OUT GPIO_PORT_P8
 #define TCS_PIN_OUT GPIO_PIN3
 
+#define TCS_OEN_PORT  GPIO_PORT_P1
+#define TCS_OEN_PIN  GPIO_PIN5
+
 // Enumeracion para mejor legibilidad
 typedef enum{
     ROJO = 0,
@@ -39,8 +42,10 @@ void TCS3200_Select_Color(COLOR_T color);
 
 void TCS3200_init_Capture(void);
 
-uint32_t TCS3200_Read_Frequency(void);
+void TCS3200_Read_period (void);
 
 COLOR_T TCS3200_Read_Color (void);
+
+void TimerA1_init(void);
 
 #endif /* TCS_3200_H_ */
