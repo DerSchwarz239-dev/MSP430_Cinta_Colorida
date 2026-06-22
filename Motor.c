@@ -31,7 +31,7 @@ void Motores_init(void){
 
 
     Timer_init();
-    Servo_Start_PWM();
+    //Servo_Start_PWM();
     MotorDC_Start_PWM();
     ADC_config ();
 
@@ -43,7 +43,7 @@ void Timer_init(void){
     p.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
     p.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1; //1 tick cada 1us
     p.timerPeriod = 19999; //(CCRO+1)*1us = 20ms
-    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE; //Desactiva interrupcion por CCR0
+    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE; //Desactiva interrupcion por CCR0
     p.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE; //Desactiva interrupcion por desborde
     p.timerClear = TIMER_A_DO_CLEAR;
     p.startTimer = false;
@@ -67,7 +67,7 @@ void Servo_Start_PWM(void){
      * Pulso de 2ms -> Servo a 180°
      */
 
-    cpServo.compareValue = 1500;   // Arranca en 90° (1500us = 1.5ms)
+    cpServo.compareValue = 1000;   // Arranca en 90° (1500us = 1.5ms)
 
 
     Timer_A_initCompareMode(TIMER_A0_BASE, &cpServo);
@@ -126,9 +126,6 @@ __interrupt void ISR_Puerto1(void){ //Atiende el botón en PI.2
             Timer_A_stop(TIMER_A0_BASE);
         }
     }
-
-
-
 }
 
 

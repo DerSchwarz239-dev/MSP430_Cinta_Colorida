@@ -10,40 +10,46 @@
 
 extern volatile uint16_t lectura_pot;
 extern volatile uint8_t ADC_flag;
-
+extern volatile uint8_t flag_1_seg;
+extern volatile uint8_t Cnt_Rojo, Cnt_Verde, Cnt_Azul, Cnt_Total;
+extern volatile uint8_t flag_caja;
 
 
 int main(void)
 {
-    //uint16_t ancho_pulso = 1500;
+
     uint16_t velocidad = 10000;
 
 
     WDT_A_hold(WDT_A_BASE);
     PMM_unlockLPM5();
 
-    //Activa Servo, motor, ADC e interrupción de botón
-    //Motores_init();
-    TCS3200_init();
-    Init_HC05();
-    Init_Cinta();
-    Init_LCD();
-
     __enable_interrupt();
 
+    //Inits
+   // Init_HC05();
+   // Init_Cinta();
+    //Init_LCD();
+    Motores_init(); //Activa Servo, motor, ADC e interrupción de botón
+    //TCS3200_init();
+    //Fin INITS
 
     volatile COLOR_T color_aux = AZUL;
 
     while(1){
 
-        color_aux = TCS3200_Read_Color();
-        __delay_cycles(5000000);
+        if(flag_caja){
+            flag_caja = 0;
+            Cinta_Recibe_Caja();
+        }
 
-        color_aux = TCS3200_Read_Color();
-        __delay_cycles(5000000);
+        if (flag_1_seg == 1){
+            flag_1_seg = 0;
+            Cnt_Total = Cnt_Rojo + Cnt_Verde + Cnt_Azul;
+            show_Color_Amount(Cnt_Total, TRANSPARENTE);
+            __delay_cycles(3000000);
 
-        color_aux = TCS3200_Read_Color();
-         __delay_cycles(5000000);
+        }
 
 
         ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad según el potenciómetro
@@ -54,6 +60,7 @@ int main(void)
         }
 
     }
+
     return 0;
 
 }
