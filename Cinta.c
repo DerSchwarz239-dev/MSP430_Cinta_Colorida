@@ -7,6 +7,10 @@
 
 #include "Cinta.h"
 
+  volatile COLOR_T Color = AZUL;
+  volatile uint8_t Cnt_Rojo = 0, Cnt_Verde = 0, Cnt_Azul = 0, Cnt_Total = 0;
+  volatile uint8_t flag_1_seg = 0;
+
 void Init_Cinta (void){
 
     GPIO_setAsInputPinWithPullUpResistor(BTN_PORT, BTN_PIN);
@@ -16,28 +20,36 @@ void Init_Cinta (void){
 
 }
 
-void Cinta_Recibe_Caja (COLOR_T Color){
+void Cinta_Recibe_Caja (void){
 
+
+    Color = TCS3200_Read_Color();
     switch (Color) {
             case ROJO:
                 Cnt_Rojo ++;
                 show_Color_Amount(Cnt_Rojo, ROJO);
                 send_Color_UART(ROJO);
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1500); /*MUEVE SERVO*/
                 break;
             case VERDE:
                 Cnt_Verde ++;
                 show_Color_Amount(Cnt_Verde, VERDE);
                 send_Color_UART(VERDE);
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 2000);/*MUEVE SERVO*/
                 break;
             case AZUL:
                 Cnt_Azul ++;
                 show_Color_Amount(Cnt_Azul, AZUL);
                 send_Color_UART(AZUL);
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO*/
                 break;
             default:
-                Cnt_Total = Cnt_Rojo + Cnt_Verde + Cnt_Azul;
-                show_Color_Amount(Cnt_Total, TRANSPARENTE);
+                break;
         }
+
 
 }
 
@@ -52,6 +64,17 @@ __interrupt void ISR_Puerto2(void) {
         Cnt_Verde = 0;
         Cnt_Azul = 0;
         Cnt_Total = 0;
+    }
+}
+
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TA0_CCR0_ISR(void) {
+    volatile static uint16_t Cnt_1_Seg = 0;
+    Cnt_1_Seg ++;
+    if (Cnt_1_Seg >= INTERRUPCIONES_PARA_1_SEG) {
+        Cnt_1_Seg = 0;
+        flag_1_seg = 1;
+        // Paso 1 segundo
     }
 }
 
