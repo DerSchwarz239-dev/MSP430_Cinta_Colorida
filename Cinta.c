@@ -12,6 +12,7 @@
   volatile uint8_t flag_1_seg = 0;
   volatile uint8_t flag_Caja = 0;
 
+
 void Init_Cinta (void){
     GPIO_setAsInputPinWithPullUpResistor(BTN_PORT, BTN_PIN);
     GPIO_clearInterrupt(BTN_PORT, BTN_PIN);
@@ -25,10 +26,10 @@ void Init_Cinta (void){
     GPIO_selectInterruptEdge(BTN_EXT_PORT, BTN_EXT_PIN,GPIO_HIGH_TO_LOW_TRANSITION);
     //Habilitar interrupción del pin
     GPIO_enableInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
+
 }
 
 void Cinta_Recibe_Caja (void){
-
 
     Color = TCS3200_Read_Color();
     switch (Color) {
@@ -96,6 +97,5 @@ __interrupt void TA0_CCR0_ISR(void) {
         // Paso 1 segundo
     }
 }
-
 
 

@@ -21,6 +21,7 @@
 #define BTN_EXT_PIN  GPIO_PIN7
 
 
+
 void Init_Cinta (void);
 
 void Cinta_Recibe_Caja (void);

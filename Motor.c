@@ -29,10 +29,9 @@ void Motores_init(void){
     //Habilitar interrupción del pin
     GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN2);
 
-    //GPIO_setOutputHighOnPin(MOTORDC_PORT, MOTORDC_PIN);
 
     Timer_init();
-    Servo_Start_PWM();
+    //Servo_Start_PWM();
     MotorDC_Start_PWM();
     ADC_config ();
 
@@ -70,7 +69,6 @@ void Servo_Start_PWM(void){
 
     cpServo.compareValue = 1000;   // Arranca en 90° (1500us = 1.5ms)
 
-
     Timer_A_initCompareMode(TIMER_A0_BASE, &cpServo);
 }
 
@@ -103,7 +101,7 @@ void ADC_config (void){
 
 void ADC_function(void){
     uint16_t velocidad = 10000;
-    ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad seg�n el potenci�metro
+    ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad segun el potenciometro
             if(ADC_flag){
                 ADC_flag = 0;
                 velocidad = (((uint32_t)lectura_pot*20000)/1023); //Adapta el valor del ADC a la cantidad de ticks
@@ -121,7 +119,7 @@ __interrupt void ADC_ISR(void) {
 }
 
 #pragma vector = PORT1_VECTOR
-__interrupt void ISR_Puerto1(void){ //Atiende el botón en PI.2
+__interrupt void ISR_Puerto1(void){ //Atiende el botón en P1.2
 
    //Guarda estado de P1.2
    uint16_t status = GPIO_getInterruptStatus(BTN_SS_PORT, BTN_SS_PIN);

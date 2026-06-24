@@ -32,15 +32,18 @@ int main(void)
     while(1){
         if (flag_Caja == 1){
             flag_Caja = 0;
-            flag_1_seg = 0; /*Queremos que se muestre el total 1 segundo despues de que se mostro la ultima lectura*/
+            flag_1_seg = 0; //Queremos que se muestre el total 1 segundo despues de que se mostro la ultima lectura
             Cinta_Recibe_Caja();
         }
+
         if (flag_1_seg == 1){
             flag_1_seg = 0;
             Cnt_Total = Cnt_Azul + Cnt_Rojo + Cnt_Verde;
             show_Color_Amount(Cnt_Total, TOTAL);
         }
+
         ADC_function();
+
 
     }
     return 0;
