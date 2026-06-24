@@ -43,7 +43,7 @@ void Timer_init(void){
     p.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
     p.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1; //1 tick cada 1us
     p.timerPeriod = 19999; //(CCRO+1)*1us = 20ms
-    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE; //Desactiva interrupcion por CCR0
+    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE; //activa interrupcion por CCR0
     p.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE; //Desactiva interrupcion por desborde
     p.timerClear = TIMER_A_DO_CLEAR;
     p.startTimer = false;
@@ -68,7 +68,6 @@ void Servo_Start_PWM(void){
      */
 
     cpServo.compareValue = 1000;   // Arranca en 90° (1500us = 1.5ms)
-
 
     Timer_A_initCompareMode(TIMER_A0_BASE, &cpServo);
 }
@@ -100,6 +99,16 @@ void ADC_config (void){
 
 }
 
+void ADC_function(void){
+    uint16_t velocidad = 10000;
+    ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad segun el potenciometro
+            if(ADC_flag){
+                ADC_flag = 0;
+                velocidad = (((uint32_t)lectura_pot*20000)/1023); //Adapta el valor del ADC a la cantidad de ticks
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_2, velocidad);
+            }
+}
+
 
 #pragma vector = ADC_VECTOR
 __interrupt void ADC_ISR(void) {
@@ -110,7 +119,7 @@ __interrupt void ADC_ISR(void) {
 }
 
 #pragma vector = PORT1_VECTOR
-__interrupt void ISR_Puerto1(void){ //Atiende el botón en PI.2
+__interrupt void ISR_Puerto1(void){ //Atiende el botón en P1.2
 
    //Guarda estado de P1.2
    uint16_t status = GPIO_getInterruptStatus(BTN_SS_PORT, BTN_SS_PIN);
@@ -127,5 +136,6 @@ __interrupt void ISR_Puerto1(void){ //Atiende el botón en PI.2
         }
     }
 }
+
 
 

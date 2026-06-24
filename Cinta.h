@@ -13,7 +13,7 @@
 #include "Motor.h"
 
 
-#define INTERRUPCIONES_PARA_1_SEG   1000
+#define INTERRUPCIONES_PARA_1_SEG   500
 
 #define BTN_PORT    GPIO_PORT_P2
 #define BTN_PIN     GPIO_PIN6

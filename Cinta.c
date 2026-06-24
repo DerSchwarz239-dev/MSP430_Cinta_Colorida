@@ -10,10 +10,10 @@
   volatile COLOR_T Color = AZUL;
   volatile uint8_t Cnt_Rojo = 0, Cnt_Verde = 0, Cnt_Azul = 0, Cnt_Total = 0;
   volatile uint8_t flag_1_seg = 0;
-  volatile uint8_t flag_caja = 0;
+  volatile uint8_t flag_Caja = 0;
+
 
 void Init_Cinta (void){
-
     GPIO_setAsInputPinWithPullUpResistor(BTN_PORT, BTN_PIN);
     GPIO_clearInterrupt(BTN_PORT, BTN_PIN);
     GPIO_selectInterruptEdge(BTN_PORT, BTN_PIN, GPIO_HIGH_TO_LOW_TRANSITION);
@@ -30,7 +30,6 @@ void Init_Cinta (void){
 }
 
 void Cinta_Recibe_Caja (void){
-
 
     Color = TCS3200_Read_Color();
     switch (Color) {
@@ -53,7 +52,6 @@ void Cinta_Recibe_Caja (void){
                 show_Color_Amount(Cnt_Azul, AZUL);
                 send_Color_UART(AZUL);
                 Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO*/
                 break;
             default:
                 break;
@@ -84,7 +82,7 @@ __interrupt void ISR_Puerto2(void) {
      if(status & GPIO_PIN7){   //Evalua que se haya presionado el botón en P1.7
          //Se limpia flag de botón en P1.7
          GPIO_clearInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
-         flag_caja = 1;
+         flag_Caja = 1;
 
      }
 }
