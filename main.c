@@ -32,7 +32,7 @@ int main(void)
     while(1){
         if (flag_Caja == 1){
             flag_Caja = 0;
-            flag_1_seg = 0; /*Queremos que se muestre el total 1 segundo despues de que se mostro la ultima lectura*/
+            flag_1_seg = 0; //Queremos que se muestre el total 1 segundo despues de que se mostro la ultima lectura
             Cinta_Recibe_Caja();
         }
 
