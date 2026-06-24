@@ -31,7 +31,7 @@ typedef enum{
     ROJO = 0,
     VERDE = 1,
     AZUL = 2,
-    TRANSPARENTE = 3
+    TOTAL = 3
 }COLOR_T;
 
 //Prototipo Funciones

@@ -26,6 +26,7 @@ void Servo_Start_PWM(void);
 void MotorDC_Start_PWM(void);
 void ADC_config (void);
 void Motores_init(void);
+void ADC_function(void);
 
 
 
