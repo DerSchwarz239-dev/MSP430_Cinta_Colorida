@@ -13,11 +13,12 @@
 #include "Motor.h"
 
 
-#define INTERRUPCIONES_PARA_1_SEG   1000
+#define INTERRUPCIONES_PARA_1_SEG   500
 
 #define BTN_PORT    GPIO_PORT_P2
 #define BTN_PIN     GPIO_PIN6
-
+#define BTN_EXT_PORT  GPIO_PORT_P2
+#define BTN_EXT_PIN  GPIO_PIN7
 
 
 void Init_Cinta (void);

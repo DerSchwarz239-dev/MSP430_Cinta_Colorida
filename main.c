@@ -8,21 +8,17 @@
 
 
 
-extern volatile uint16_t lectura_pot;
-extern volatile uint8_t ADC_flag;
+//extern volatile uint16_t lectura_pot;
+//extern volatile uint8_t ADC_flag;
 extern volatile uint8_t flag_1_seg;
 extern volatile uint8_t Cnt_Rojo, Cnt_Verde, Cnt_Azul, Cnt_Total;
-
+extern volatile uint8_t flag_Caja;
 
 int main(void)
 {
-    uint16_t velocidad = 10000;
-
 
     WDT_A_hold(WDT_A_BASE);
     PMM_unlockLPM5();
-
-
     __enable_interrupt();
 
     /*Inits*/
@@ -33,37 +29,21 @@ int main(void)
     TCS3200_init();
     /*Fin INITS*/
 
-
-
     while(1){
-
-        Cinta_Recibe_Caja();
-        __delay_cycles(3000000);
+        if (flag_Caja == 1){
+            flag_Caja = 0;
+            flag_1_seg = 0; /*Queremos que se muestre el total 1 segundo despues de que se mostro la ultima lectura*/
+            Cinta_Recibe_Caja();
+        }
         if (flag_1_seg == 1){
             flag_1_seg = 0;
-            Cnt_Total = Cnt_Rojo + Cnt_Verde + Cnt_Azul;
-            show_Color_Amount(Cnt_Total, TRANSPARENTE);
-            __delay_cycles(3000000);
-
+            Cnt_Total = Cnt_Azul + Cnt_Rojo + Cnt_Verde;
+            show_Color_Amount(Cnt_Total, TOTAL);
         }
-
-
-
-    /*Fin Inits*/
-
-
-        /*
-        ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad según el potenciómetro
-        if(ADC_flag){
-            ADC_flag = 0;
-            velocidad = (((uint32_t)lectura_pot*20000)/1023); //Adapta el valor del ADC a la cantidad de ticks
-            Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_2, velocidad);
-        }*/
+        ADC_function();
 
     }
-
     return 0;
-
 }
 
 

@@ -39,7 +39,7 @@ void TCS3200_Select_Color(COLOR_T color){
     // ROJO S2 = Low, S3 = Low
     // AZUL S2 = Low, S3 = High
     // VERDE S2 = High, S3 = High
-    // TRANSPARENTE S2 = High, S3 = Low
+    // TOTAL S2 = High, S3 = Low Se asume que este nunca deberia de entrar
 
     switch(color){
     case ROJO:
@@ -53,7 +53,7 @@ void TCS3200_Select_Color(COLOR_T color){
         GPIO_setOutputHighOnPin(TCS_PORT, TCS_PIN_S2 | TCS_PIN_S3);
         //GPIO_setOutputHighOnPin(TCS_PORT, TCS_PIN_S3);
         break;
-    case TRANSPARENTE:
+    case TOTAL:
         GPIO_setOutputHighOnPin(TCS_PORT, TCS_PIN_S2);
         GPIO_setOutputLowOnPin(TCS_PORT, TCS_PIN_S3);
         break;

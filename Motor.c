@@ -29,6 +29,7 @@ void Motores_init(void){
     //Habilitar interrupciÃ³n del pin
     GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN2);
 
+    //GPIO_setOutputHighOnPin(MOTORDC_PORT, MOTORDC_PIN);
 
     Timer_init();
     Servo_Start_PWM();
@@ -43,7 +44,7 @@ void Timer_init(void){
     p.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
     p.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1; //1 tick cada 1us
     p.timerPeriod = 19999; //(CCRO+1)*1us = 20ms
-    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE; //Desactiva interrupcion por CCR0
+    p.captureCompareInterruptEnable_CCR0_CCIE = TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE; //activa interrupcion por CCR0
     p.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE; //Desactiva interrupcion por desborde
     p.timerClear = TIMER_A_DO_CLEAR;
     p.startTimer = false;
@@ -100,6 +101,16 @@ void ADC_config (void){
 
 }
 
+void ADC_function(void){
+    uint16_t velocidad = 10000;
+    ADC_startConversion(ADC_BASE, ADC_SINGLECHANNEL);//Modifica velocidad según el potenciómetro
+            if(ADC_flag){
+                ADC_flag = 0;
+                velocidad = (((uint32_t)lectura_pot*20000)/1023); //Adapta el valor del ADC a la cantidad de ticks
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_2, velocidad);
+            }
+}
+
 
 #pragma vector = ADC_VECTOR
 __interrupt void ADC_ISR(void) {
@@ -126,9 +137,7 @@ __interrupt void ISR_Puerto1(void){ //Atiende el botÃ³n en PI.2
             Timer_A_stop(TIMER_A0_BASE);
         }
     }
-
-
-
 }
+
 
 

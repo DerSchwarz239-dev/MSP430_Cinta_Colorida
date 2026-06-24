@@ -58,7 +58,7 @@ void Init_HC05 (void){
 
     /*Configuracion SMCLK a 1 MHz*/
     CS_initFLLSettle(1000, 30);
-    volatile uint32_t f_smclk = CS_getSMCLK();  // debe dar 1000000
+    //volatile uint32_t f_smclk = CS_getSMCLK();  // debe dar 1000000
 
 
 }
@@ -85,7 +85,7 @@ void send_Color_UART (COLOR_T color){
             case AZUL:
                 send_String_UART("AZUL\r\n");
                 break;
-            case TRANSPARENTE:
+            case TOTAL:
                 break;
             default:
                 send_String_UART("ESTE ES UN EASTER EGG\r\n");
