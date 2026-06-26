@@ -16,7 +16,7 @@
 
 #define HC_TX_PIN   GPIO_PIN0
 #define HC_RX_PIN   GPIO_PIN1
-#define HC_EN_PIN   GPIO_PIN3
+//#define HC_EN_PIN   GPIO_PIN3
 
 
 
