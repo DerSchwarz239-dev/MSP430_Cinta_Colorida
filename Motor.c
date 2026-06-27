@@ -31,7 +31,7 @@ void Motores_init(void){
 
 
     Timer_init();
-    //Servo_Start_PWM();
+    Servo_Start_PWM();
     MotorDC_Start_PWM();
     ADC_config ();
 
@@ -67,7 +67,7 @@ void Servo_Start_PWM(void){
      * Pulso de 2ms -> Servo a 180°
      */
 
-    cpServo.compareValue = 1000;   // Arranca en 90° (1500us = 1.5ms)
+    cpServo.compareValue = 2250;
 
     Timer_A_initCompareMode(TIMER_A0_BASE, &cpServo);
 }

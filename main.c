@@ -8,8 +8,7 @@
 
 
 
-//extern volatile uint16_t lectura_pot;
-//extern volatile uint8_t ADC_flag;
+
 extern volatile uint8_t flag_1_seg;
 extern volatile uint8_t Cnt_Rojo, Cnt_Verde, Cnt_Azul, Cnt_Total;
 extern volatile uint8_t flag_Caja;

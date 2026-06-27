@@ -26,6 +26,8 @@ void Init_Cinta (void);
 
 void Cinta_Recibe_Caja (void);
 
+void Confirma_Pulsacion(void);
+
 
 
 

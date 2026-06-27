@@ -164,7 +164,6 @@ __interrupt void ISR_TimerA1_Captura(void){
 
                 // Levanta la bandera para avisar que hay un nuevo período medido
                 dato_listo = 1;
-
             }
 
             break;

@@ -11,6 +11,8 @@
   volatile uint8_t Cnt_Rojo = 0, Cnt_Verde = 0, Cnt_Azul = 0, Cnt_Total = 0;
   volatile uint8_t flag_1_seg = 0;
   volatile uint8_t flag_Caja = 0;
+  volatile uint8_t flag_antirrebote = 0;
+
 
 
 void Init_Cinta (void){
@@ -31,27 +33,27 @@ void Init_Cinta (void){
 
 void Cinta_Recibe_Caja (void){
 
+    //Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1500); /*MUEVE SERVO AL Origen*/
     Color = TCS3200_Read_Color();
     switch (Color) {
             case ROJO:
                 Cnt_Rojo ++;
                 show_Color_Amount(Cnt_Rojo, ROJO);
                 send_Color_UART(ROJO);
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1500); /*MUEVE SERVO*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO*/
                 break;
             case VERDE:
                 Cnt_Verde ++;
                 show_Color_Amount(Cnt_Verde, VERDE);
                 send_Color_UART(VERDE);
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 2000);/*MUEVE SERVO*/
+                //Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1500); /*MUEVE SERVO AL Origen*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 2250);/*MUEVE SERVO*/
                 break;
             case AZUL:
                 Cnt_Azul ++;
                 show_Color_Amount(Cnt_Azul, AZUL);
                 send_Color_UART(AZUL);
-                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1000); /*MUEVE SERVO AL Origen*/
+                Timer_A_setCompareValue(TIMER_A0_BASE, TIMER_A_CAPTURECOMPARE_REGISTER_1, 1600); /*MUEVE SERVO AL Origen*/
                 break;
             default:
                 break;
@@ -62,6 +64,7 @@ void Cinta_Recibe_Caja (void){
 
 #pragma vector = PORT2_VECTOR
 __interrupt void ISR_Puerto2(void) {
+
     //Guarda estado de P2.6
     uint16_t status = GPIO_getInterruptStatus(BTN_PORT, BTN_PIN);
 
@@ -79,23 +82,50 @@ __interrupt void ISR_Puerto2(void) {
     //Guarda estado de P2.7
     status = GPIO_getInterruptStatus(BTN_EXT_PORT, BTN_EXT_PIN);
 
-     if(status & GPIO_PIN7){   //Evalua que se haya presionado el botón en P1.7
-         //Se limpia flag de botón en P1.7
-         GPIO_clearInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
-         flag_Caja = 1;
+     if(status & GPIO_PIN7){   //Evalua que se haya presionado el botón en P2.7
 
+         //Se limpia flag de botón en P2.7
+         GPIO_clearInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
+
+         GPIO_disableInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
+         flag_antirrebote = 1;
      }
 }
 
 #pragma vector = TIMER0_A0_VECTOR
 __interrupt void TA0_CCR0_ISR(void) {
     volatile static uint16_t Cnt_1_Seg = 0;
+    volatile static uint16_t Cnt_40ms = 0;
+
     Cnt_1_Seg ++;
     if (Cnt_1_Seg >= INTERRUPCIONES_PARA_1_SEG) {
         Cnt_1_Seg = 0;
         flag_1_seg = 1;
         // Paso 1 segundo
     }
+    if(flag_antirrebote){
+        Cnt_40ms++;
+        if(Cnt_40ms == 2){
+            Cnt_40ms = 0;
+            flag_antirrebote = 0;
+            Confirma_Pulsacion();
+        }
+    }
 }
+
+void Confirma_Pulsacion(void){
+
+       if(GPIO_getInputPinValue(BTN_EXT_PORT,BTN_EXT_PIN) == GPIO_INPUT_PIN_LOW){
+           flag_Caja = 1;
+       }
+       GPIO_clearInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
+       GPIO_enableInterrupt(BTN_EXT_PORT, BTN_EXT_PIN);
+}
+
+
+
+
+
+
 
 
